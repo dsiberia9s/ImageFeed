@@ -17,7 +17,9 @@
 		28B231162A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B231152A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift */; };
 		28B231182A5A8B1E007B8E4B /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B231172A5A8B1D007B8E4B /* ImagesListCell.swift */; };
 		28B2311B2A5A9B5F007B8E4B /* ImagesListViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B2311A2A5A9B5F007B8E4B /* ImagesListViewController+Extensions.swift */; };
+		28C45BDF2A63D08C003E239A /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C45BDE2A63D08C003E239A /* SingleImageViewController.swift */; };
 		28D54BCF2A5BF65200F52F0D /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D54BCE2A5BF65200F52F0D /* GradientView.swift */; };
+		28FEE81D2A61806B0041E679 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FEE81C2A61806B0041E679 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +35,9 @@
 		28B231152A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource+Extensions.swift"; sourceTree = "<group>"; };
 		28B231172A5A8B1D007B8E4B /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		28B2311A2A5A9B5F007B8E4B /* ImagesListViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImagesListViewController+Extensions.swift"; sourceTree = "<group>"; };
+		28C45BDE2A63D08C003E239A /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		28D54BCE2A5BF65200F52F0D /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		28FEE81C2A61806B0041E679 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,8 @@
 				28B231102A5A8132007B8E4B /* Helpers */,
 				283301692A531DC8000723F2 /* AppDelegate.swift */,
 				2833016B2A531DC8000723F2 /* SceneDelegate.swift */,
+				28C45BDE2A63D08C003E239A /* SingleImageViewController.swift */,
+				28FEE81C2A61806B0041E679 /* ProfileViewController.swift */,
 				283301722A531DCA000723F2 /* Assets.xcassets */,
 				283301742A531DCA000723F2 /* LaunchScreen.storyboard */,
 				2833016F2A531DC8000723F2 /* Main.storyboard */,
@@ -91,9 +97,9 @@
 		28B231192A5A8B38007B8E4B /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
+				28D54BCE2A5BF65200F52F0D /* GradientView.swift */,
 				28B231172A5A8B1D007B8E4B /* ImagesListCell.swift */,
 				2833016D2A531DC8000723F2 /* ImagesListViewController.swift */,
-				28D54BCE2A5BF65200F52F0D /* GradientView.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -175,6 +181,8 @@
 				28B231142A5A887D007B8E4B /* UITableViewDelegate+Extensions.swift in Sources */,
 				28B231162A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift in Sources */,
 				2833016C2A531DC8000723F2 /* SceneDelegate.swift in Sources */,
+				28C45BDF2A63D08C003E239A /* SingleImageViewController.swift in Sources */,
+				28FEE81D2A61806B0041E679 /* ProfileViewController.swift in Sources */,
 				28D54BCF2A5BF65200F52F0D /* GradientView.swift in Sources */,
 				28B231182A5A8B1E007B8E4B /* ImagesListCell.swift in Sources */,
 			);
