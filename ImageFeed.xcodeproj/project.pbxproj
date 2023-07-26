@@ -13,6 +13,7 @@
 		283301712A531DC8000723F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2833016F2A531DC8000723F2 /* Main.storyboard */; };
 		283301732A531DCA000723F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 283301722A531DCA000723F2 /* Assets.xcassets */; };
 		283301762A531DCA000723F2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 283301742A531DCA000723F2 /* LaunchScreen.storyboard */; };
+		287F62762A6594E500AC8606 /* SingleImageViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F62752A6594E500AC8606 /* SingleImageViewController+Extensions.swift */; };
 		28B231142A5A887D007B8E4B /* UITableViewDelegate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B231132A5A887D007B8E4B /* UITableViewDelegate+Extensions.swift */; };
 		28B231162A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B231152A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift */; };
 		28B231182A5A8B1E007B8E4B /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B231172A5A8B1D007B8E4B /* ImagesListCell.swift */; };
@@ -31,6 +32,7 @@
 		283301722A531DCA000723F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		283301752A531DCA000723F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		283301772A531DCA000723F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		287F62752A6594E500AC8606 /* SingleImageViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SingleImageViewController+Extensions.swift"; sourceTree = "<group>"; };
 		28B231132A5A887D007B8E4B /* UITableViewDelegate+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDelegate+Extensions.swift"; sourceTree = "<group>"; };
 		28B231152A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewDataSource+Extensions.swift"; sourceTree = "<group>"; };
 		28B231172A5A8B1D007B8E4B /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				28B231132A5A887D007B8E4B /* UITableViewDelegate+Extensions.swift */,
 				28B231152A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift */,
 				28B2311A2A5A9B5F007B8E4B /* ImagesListViewController+Extensions.swift */,
+				287F62752A6594E500AC8606 /* SingleImageViewController+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -181,6 +184,7 @@
 				28B231142A5A887D007B8E4B /* UITableViewDelegate+Extensions.swift in Sources */,
 				28B231162A5A88F0007B8E4B /* UITableViewDataSource+Extensions.swift in Sources */,
 				2833016C2A531DC8000723F2 /* SceneDelegate.swift in Sources */,
+				287F62762A6594E500AC8606 /* SingleImageViewController+Extensions.swift in Sources */,
 				28C45BDF2A63D08C003E239A /* SingleImageViewController.swift in Sources */,
 				28FEE81D2A61806B0041E679 /* ProfileViewController.swift in Sources */,
 				28D54BCF2A5BF65200F52F0D /* GradientView.swift in Sources */,
