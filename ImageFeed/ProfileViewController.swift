@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var logoutButton: UIButton!
@@ -29,6 +29,9 @@ class ProfileViewController: UIViewController {
         let imageView = UIImageView(image: profileImage)
         
         imageView.tintColor = .gray
+        
+        imageView.layer.cornerRadius = 35
+        imageView.clipsToBounds = true
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
@@ -93,6 +96,7 @@ class ProfileViewController: UIViewController {
         
         label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 110).isActive = true
+        label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
         
         self.usernameLabel = label
     }
@@ -125,6 +129,7 @@ class ProfileViewController: UIViewController {
         
         label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 136).isActive = true
+        label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
         
         self.nicknameLabel = label
     }
@@ -134,6 +139,8 @@ class ProfileViewController: UIViewController {
         
         label.text = "Description"
         label.textColor = UIColor(named: "YP White")
+        
+        label.numberOfLines = 0
         
         // Устанавливаем размер шрифта
         let fontSize: CGFloat = 13.0
@@ -157,6 +164,7 @@ class ProfileViewController: UIViewController {
         
         label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 162).isActive = true
+        label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
         
         self.descriptionLabel = label
     }
