@@ -15,11 +15,15 @@ final class ProfileViewController: UIViewController {
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
+    private let oauth2TokenStorage = OAuth2TokenStorage()
+    
     @objc
     private func didTapButton() {
         for view in view.subviews {
             if view is UILabel {
                 view.removeFromSuperview()
+                
+                oauth2TokenStorage.token = nil
             }
         }
     }
