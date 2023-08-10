@@ -18,9 +18,9 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 final class WebViewViewController: UIViewController {
     
-    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet private weak var webView: WKWebView!
     
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet private weak var progressView: UIProgressView!
     
     weak var delegate: WebViewViewControllerDelegate?
         
@@ -29,18 +29,25 @@ final class WebViewViewController: UIViewController {
         
         webView.navigationDelegate = self
         
-        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
-        
-        urlComponents.queryItems = [
+        if let url = buildAuthorizationURL() {
+            let request = URLRequest(url: url)
+            webView.load(request)
+        } else {
+            assertionFailure("URL could not be created")
+        }
+    }
+    
+    func buildAuthorizationURL() -> URL? {
+        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)
+
+        urlComponents?.queryItems = [
             URLQueryItem(name: "client_id", value: accessKey),
             URLQueryItem(name: "redirect_uri", value: redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: accessScope)
         ]
-        
-        let url = urlComponents.url!
-        let request = URLRequest(url: url)
-        webView.load(request)
+
+        return urlComponents?.url
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {

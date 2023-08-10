@@ -50,14 +50,14 @@
             <objects>
                 <viewController id="f6k-rC-ARA" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5Ir-kY-OkA">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="886"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="auth_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="ws1-mA-LIt">
-                                <rect key="frame" x="177" y="292" width="60" height="60"/>
+                                <rect key="frame" x="177" y="280" width="60" height="60"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ntd-NY-dVb">
-                                <rect key="frame" x="16" y="468" width="382" height="48"/>
+                                <rect key="frame" x="16" y="758" width="382" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="M3M-Dx-FTQ"/>
@@ -80,10 +80,10 @@
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="Ntd-NY-dVb" firstAttribute="centerX" secondItem="ws1-mA-LIt" secondAttribute="centerX" id="IAb-Nw-pVx"/>
-                            <constraint firstItem="Ntd-NY-dVb" firstAttribute="top" secondItem="ws1-mA-LIt" secondAttribute="top" constant="176" id="K22-d5-EGE"/>
                             <constraint firstItem="ws1-mA-LIt" firstAttribute="centerX" secondItem="5Ir-kY-OkA" secondAttribute="centerX" id="OdN-D5-7DF"/>
                             <constraint firstItem="Ntd-NY-dVb" firstAttribute="leading" secondItem="kG4-Ls-trp" secondAttribute="leading" constant="16" id="Vea-8b-KdX"/>
                             <constraint firstItem="ws1-mA-LIt" firstAttribute="top" secondItem="kG4-Ls-trp" secondAttribute="top" constant="236" id="c1S-N7-BFS"/>
+                            <constraint firstItem="kG4-Ls-trp" firstAttribute="bottom" secondItem="Ntd-NY-dVb" secondAttribute="bottom" constant="90" id="z59-c5-BGE"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xBw-ee-ILC"/>
@@ -331,7 +331,7 @@
                         <color key="backgroundColor" name="YP Black"/>
                     </view>
                     <connections>
-                        <segue destination="M48-7y-04h" kind="presentation" identifier="ShowAuthenticationScreen" id="yTk-vF-4yC"/>
+                        <segue destination="M48-7y-04h" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="yTk-vF-4yC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hTy-Zd-sqe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -344,7 +344,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="M48-7y-04h" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fky-eB-M2M">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
