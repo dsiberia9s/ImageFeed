@@ -19,10 +19,11 @@ protocol WebViewViewControllerDelegate: AnyObject {
 final class WebViewViewController: UIViewController {
     
     @IBOutlet private weak var webView: WKWebView!
-    
     @IBOutlet private weak var progressView: UIProgressView!
     
     weak var delegate: WebViewViewControllerDelegate?
+    
+    private var estimatedProgressObservation: NSKeyValueObservation?
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,18 +56,29 @@ final class WebViewViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        /*
         webView.addObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
             options: .new,
             context: nil)
+         */
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+            options: [],
+            changeHandler: { [weak self] _, _ in
+                guard let self = self else { return }
+                self.updateProgress()
+            }
+        )
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        webView.removeObserver(
+        /* webView.removeObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
             context: nil)
+         */
     }
     
     @IBAction func didTapBackButton(_ sender: UIButton) {
@@ -102,6 +114,7 @@ extension WebViewViewController: WKNavigationDelegate {
         }
     }
     
+    /*
     override func observeValue(
         forKeyPath keyPath: String?,
         of object: Any?,
@@ -114,7 +127,8 @@ extension WebViewViewController: WKNavigationDelegate {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
-
+    */
+    
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001

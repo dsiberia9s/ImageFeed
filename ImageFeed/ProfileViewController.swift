@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -16,6 +17,8 @@ final class ProfileViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     
     private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     @objc
     private func didTapButton() {
@@ -26,6 +29,37 @@ final class ProfileViewController: UIViewController {
                 oauth2TokenStorage.token = nil
             }
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        createAvatarImage()
+        createLogoutButton()
+        createUsernameLabel()
+        createNicknameLabel()
+        createDescriptionLabel()
+        
+        guard let token = oauth2TokenStorage.token else {
+            return
+        }
+        
+        guard let profile = self.profileService.profile else {
+            return
+        }
+        
+        updateProfileDetails(profile)
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.DidChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateAvatar()
+        }
+        
+        updateAvatar()
     }
     
     private func createAvatarImage() {
@@ -173,13 +207,42 @@ final class ProfileViewController: UIViewController {
         self.descriptionLabel = label
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private func updateProfileDetails(_ profile: ProfileService.Profile) {
+        self.usernameLabel.text = profile.name
+        self.nicknameLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let imageUrl = URL(string: profileImageURL)
+        else {
+            return
+        }
         
-        createAvatarImage()
-        createLogoutButton()
-        createUsernameLabel()
-        createNicknameLabel()
-        createDescriptionLabel()
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+
+        self.avatarImage.kf.indicatorType = .activity
+        self.avatarImage.kf.setImage(
+            with: imageUrl,
+            options: [
+                .processor(processor)
+            ]
+        ) { result in
+            switch result {
+            case .success(let value):
+                print(value.image)
+                print(value.cacheType)
+                print(value.source)
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
