@@ -61,6 +61,8 @@ final class SingleImageViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -82,6 +84,8 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.photosName.count
@@ -100,6 +104,8 @@ extension ImagesListViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - ImagesListViewController
+
 extension ImagesListViewController {
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: self.photosName[indexPath.row]) else {
@@ -117,6 +123,8 @@ extension ImagesListViewController {
         cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
+
+// MARK: - UIScrollViewDelegate
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {

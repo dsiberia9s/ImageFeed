@@ -9,12 +9,10 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
-    // private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     
-    internal let oauth2Service = OAuth2Service()
+    internal let oauth2Service = OAuth2Service.shared
     internal let oauth2TokenStorage = OAuth2TokenStorage()
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,23 +55,7 @@ final class SplashViewController: UIViewController {
     }
 }
 
-/*
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else {
-                fatalError("Failed to prepare for \(ShowAuthenticationScreenSegueIdentifier)")
-            }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
-}
-*/
+// MARK: - AuthViewControllerDelegate
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {

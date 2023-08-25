@@ -8,59 +8,10 @@
 import Foundation
 
 final class ProfileService {
+    private init() { }
     static let shared = ProfileService()
-    
+
     private(set) var profile: Profile?
-    
-    struct ProfileResult: Codable {
-        var id: String
-        var updatedAt: String
-        var username: String
-        var firstName: String
-        var lastName: String
-        var twitterUsername: String?
-        var portfolioUrl: URL?
-        var bio: String?
-        var location: String?
-        var totalLikes: Int
-        var totalPhotos: Int
-        var totalCollections: Int
-        var followedByUser: Bool
-        var downloads: Int
-        var uploadsRemaining: Int
-        var instagramUsername: String?
-        var email: String
-        var links: UserLinks
-        
-        struct UserLinks: Codable {
-            var `self`: String
-            var html: String
-            var photos: String
-            var likes: String
-            var portfolio: String
-        }
-        
-        enum CodingKeys: String, CodingKey {
-            case id
-            case updatedAt = "updated_at"
-            case username
-            case firstName = "first_name"
-            case lastName = "last_name"
-            case twitterUsername = "twitter_username"
-            case portfolioUrl = "portfolio_url"
-            case bio
-            case location
-            case totalLikes = "total_likes"
-            case totalPhotos = "total_photos"
-            case totalCollections = "total_collections"
-            case followedByUser = "followed_by_user"
-            case downloads
-            case uploadsRemaining = "uploads_remaining"
-            case instagramUsername = "instagram_username"
-            case email
-            case links
-        }
-    }
     
     struct Profile {
         var username: String

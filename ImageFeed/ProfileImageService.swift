@@ -12,6 +12,8 @@ final class ProfileImageService {
     private let oauth2TokenStorage = OAuth2TokenStorage()
     static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
+    private init() { }
+    
     private (set) var avatarURL: String?
     
     struct ProfileImage: Codable {
