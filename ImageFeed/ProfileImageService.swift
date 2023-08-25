@@ -8,11 +8,11 @@
 import Foundation
 
 final class ProfileImageService {
+    private init() { }
     static let shared = ProfileImageService()
+    
     private let oauth2TokenStorage = OAuth2TokenStorage()
     static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    
-    private init() { }
     
     private (set) var avatarURL: String?
     
@@ -48,19 +48,15 @@ final class ProfileImageService {
                 case .success(let result):
                     self.avatarURL = result.profileImage.medium
                     
-                    guard let profileImageURL = self.avatarURL else {
-                        let error = NSError(domain: "ProfileImageService", code: 0, userInfo: [NSLocalizedDescriptionKey: "profileImageURL is nil"])
-                        completion(.failure(error))
-                        return
+                    if let profileImageURL = URL(string: self.avatarURL ?? "") {
+                        NotificationCenter.default.post(
+                            name: ProfileImageService.DidChangeNotification,
+                            object: self,
+                            userInfo: ["URL": profileImageURL]
+                        )
                     }
                     
-                    NotificationCenter.default.post(
-                        name: ProfileImageService.DidChangeNotification,
-                        object: self,
-                        userInfo: ["URL": profileImageURL]
-                    )
-                    
-                    completion(.success(profileImageURL))
+                    completion(.success(self.avatarURL ?? ""))
                 case .failure(let error):
                     completion(.failure(error))
                 }

@@ -11,7 +11,7 @@ struct ProfileResult: Codable {
     var id: String
     var username: String
     var firstName: String
-    var lastName: String
+    var lastName: String?
     var bio: String?
     
     enum CodingKeys: String, CodingKey {

@@ -11,19 +11,14 @@ import ProgressHUD
 final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    
-    internal let oauth2Service = OAuth2Service.shared
-    internal let oauth2TokenStorage = OAuth2TokenStorage()
+    private let oauth2Service = OAuth2Service.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidLoad()
         
         if let token = OAuth2TokenStorage().token {
             fetchProfile(token: token)
-            
-            if let username = profileService.profile?.username {
-                ProfileImageService.shared.fetchProfileImageURL(username: username) { _ in }
-            }
         } else {
             // Заметка на будущее: как найти viewcontroller в storyboard
             if let authViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController {
@@ -85,9 +80,11 @@ extension SplashViewController: AuthViewControllerDelegate {
     private func fetchProfile(token: String) {
         profileService.fetchProfile(token) { [weak self] result in
             guard let self = self else { return }
-    
+            
             switch result {
-            case .success:
+            case .success(let profile):
+                self.profileImageService.fetchProfileImageURL(username: profile.username) { _ in }
+                
                 self.switchToTabBarController()
             case .failure:
                 self.showErrorAlert(message: "Не удалось получить профиль")

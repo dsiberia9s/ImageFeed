@@ -12,7 +12,7 @@ final class ProfileService {
     static let shared = ProfileService()
 
     private(set) var profile: Profile?
-    
+
     struct Profile {
         var username: String
         var name: String
@@ -21,7 +21,7 @@ final class ProfileService {
         
         init(profile: ProfileResult) {
             self.username = profile.username
-            self.name = "\(profile.firstName) \(profile.lastName)"
+            self.name = "\(profile.firstName) \(profile.lastName ?? "")"
             self.loginName = "@" + profile.username
             self.bio = profile.bio ?? ""
         }
