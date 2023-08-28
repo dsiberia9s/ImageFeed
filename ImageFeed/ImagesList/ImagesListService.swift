@@ -7,9 +7,9 @@
 
 import Foundation
 
-final class ImageListService {
+final class ImagesListService {
     private init() { }
-    static let shared = ImageListService()
+    static let shared = ImagesListService()
     private let itemsPerPage: Int = 10
     private (set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
@@ -84,7 +84,7 @@ final class ImageListService {
                         print(self.photos.count)
                         
                         NotificationCenter.default.post(
-                            name: ImageListService.DidChangeNotification,
+                            name: ImagesListService.DidChangeNotification,
                             object: self,
                             userInfo: ["fetched": true]
                         )

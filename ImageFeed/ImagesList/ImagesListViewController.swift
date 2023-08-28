@@ -11,7 +11,7 @@ class ImagesListViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     let photosName: [String] = Array(0..<20).map{ "\($0)" }
     let ShowSingleImageSegueIdentifier = "ShowSingleImage"
-    let imageListService = ImageListService.shared
+    let imageListService = ImagesListService.shared
     private let oauth2TokenStorage = OAuth2TokenStorage()
     private var token: String?
     
