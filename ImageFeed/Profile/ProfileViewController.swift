@@ -55,7 +55,7 @@ final class ProfileViewController: UIViewController {
     private let logoutButton: UIButton = {
         let button = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward")!,
-            target: self,
+            target: ProfileViewController.self,
             action: #selector(didTapButton)
         )
         button.tintColor = UIColor(named: "YP Red")
@@ -152,6 +152,8 @@ final class ProfileViewController: UIViewController {
         view.addSubview(usernameLabel)
         view.addSubview(nicknameLabel)
         view.addSubview(descriptionLabel)
+        
+        self.view.backgroundColor = UIColor(named: "YP Black")
     }
     
     private func setupConstraints() {
