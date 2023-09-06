@@ -15,6 +15,7 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     var busy: Bool = false
+    let dateFormatter = ISO8601DateFormatter()
     
     struct Photo: Codable {
         let id: String

@@ -50,8 +50,8 @@ struct PhotoResult: Codable {
         likedByUser = try container.decode(Bool.self, forKey: .likedByUser)
         
         let createdAtString = try container.decode(String.self, forKey: .createdAt)
-        let dateFormatter = ISO8601DateFormatter()
         
+        let dateFormatter = ImagesListService.shared.dateFormatter
         if let date = dateFormatter.date(from: createdAtString) {
             createdAt = date
         } else {

@@ -132,13 +132,12 @@ extension ImagesListViewController {
         
         cell.cellImage.addSubview(placeholderImageView)
         
-        let placeholderWidthConstraint = NSLayoutConstraint(item: placeholderImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 83)
-        let placeholderHeightConstraint = NSLayoutConstraint(item: placeholderImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 75)
-        
-        let centerXConstraint = NSLayoutConstraint(item: placeholderImageView, attribute: .centerX, relatedBy: .equal, toItem:  cell.cellImage, attribute: .centerX, multiplier: 1.0, constant: 0)
-        let centerYConstraint = NSLayoutConstraint(item: placeholderImageView, attribute: .centerY, relatedBy: .equal, toItem:  cell.cellImage, attribute: .centerY, multiplier: 1.0, constant: 0)
-        
-        cell.cellImage.addConstraints([placeholderWidthConstraint, placeholderHeightConstraint, centerXConstraint, centerYConstraint])
+        placeholderImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        placeholderImageView.widthAnchor.constraint(equalToConstant: 83).isActive = true
+        placeholderImageView.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        placeholderImageView.centerXAnchor.constraint(equalTo: cell.cellImage.centerXAnchor).isActive = true
+        placeholderImageView.centerYAnchor.constraint(equalTo: cell.cellImage.centerYAnchor).isActive = true
         
         cell.cellImage.kf.setImage(
             with: imageUrl,
