@@ -86,7 +86,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.profileImageService.fetchProfileImageURL(username: profile.username) { _ in }
                 
                 self.switchToTabBarController()
-            case .failure:
+            case .failure(_):
                 self.showErrorAlert(message: "Не удалось получить профиль")
                 // Алерт всплывает, но затем чёрный экран.
             }
@@ -100,7 +100,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             preferredStyle: .alert
         )
         
-        let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alertController.addAction(okAction)
         
         present(alertController, animated: true, completion: nil)

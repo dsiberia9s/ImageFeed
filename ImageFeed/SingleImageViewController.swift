@@ -6,15 +6,16 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     @IBOutlet var imageView: UIImageView!
-    
     @IBOutlet weak var scrollView: UIScrollView!
-    
     @IBAction func didTapBackButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
+    
+    var fullImageUrl: String? = nil
     
     @IBAction func didTapShareButton(_ sender: UIButton) {
         guard let image = imageView.image else { return }
@@ -34,13 +35,31 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        imageView.image = image
-        
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
-        
-        rescaleAndCenterImageInScrollView(image: image)
+        loadImage()
+    }
+    
+    private func loadImage() {
+        if let fullImageUrlString = fullImageUrl,
+           let fullImageUrl = URL(string: fullImageUrlString) {
+            
+            UIBlockingProgressHUD.show()
+            
+            imageView.kf.setImage(with: fullImageUrl) {
+                [weak self] result in
+                guard let self = self else { return }
+                
+                UIBlockingProgressHUD.dismiss()
+                
+                switch result {
+                case .success(let imageResult):
+                    self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+                    scrollView.minimumZoomScale = 0.1
+                    scrollView.maximumZoomScale = 1.25
+                case .failure:
+                    showError()
+                }
+            }
+        }
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -59,68 +78,24 @@ final class SingleImageViewController: UIViewController {
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
-}
-
-// MARK: - UITableViewDelegate
-
-extension ImagesListViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return 0
+    private func showError() {
+        let alertController = UIAlertController(
+            title: "Что-то пошло не так.",
+            message: "Попробовать ещё раз?",
+            preferredStyle: .alert
+        )
+        
+        let cancelAction = UIAlertAction(title: "Не надо", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+
+        let retryAction = UIAlertAction(title: "Повторить", style: .default) {
+            [weak self] _ in
+            self?.loadImage()
         }
+        alertController.addAction(retryAction)
         
-        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-        let imageWidth = image.size.width
-        let scale = imageViewWidth / imageWidth
-        let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
-        
-        return cellHeight
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
-    }
-}
-
-// MARK: - UITableViewDataSource
-
-extension ImagesListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.photosName.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-
-        guard let imageListCell = cell as? ImagesListCell else {
-            return UITableViewCell()
-        }
-
-        configCell(for: imageListCell, with: indexPath)
-
-        return imageListCell
-    }
-}
-
-// MARK: - ImagesListViewController
-
-extension ImagesListViewController {
-    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: self.photosName[indexPath.row]) else {
-            print("Image not found")
-            
-            return
-        }
-        
-        cell.cellImage.image = image
-        
-        cell.dateLabel.text = dateFormatter.string(from: Date())
-        
-        let isLiked = indexPath.row % 2 == 0
-        let likeImage = isLiked ? UIImage(named: "likeButtonTrue") : UIImage(named: "likeButtonFalse")
-        cell.likeButton.setImage(likeImage, for: .normal)
+        present(alertController, animated: true, completion: nil)
     }
 }
 

@@ -13,16 +13,41 @@ final class ProfileViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
+    private let oauth2TokenService = OAuth2Service.shared
     
     @objc
     private func didTapButton() {
-        for view in view.subviews {
-            if view is UILabel {
-                view.removeFromSuperview()
+        cleanConfirmation()
+    }
+    
+    private func cleanConfirmation() {
+        let alertController = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert
+        )
                 
-                oauth2TokenStorage.token = nil
+        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+            for view in self.view.subviews {
+                if view is UILabel {
+                    view.removeFromSuperview()
+                    self.oauth2TokenService.clean()
+                    
+                    // Переход на другой контроллер
+                    guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+                    let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+                        .instantiateViewController(withIdentifier: "AuthViewController")
+                    window.rootViewController = tabBarController
+                }
             }
         }
+        
+        let noAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
+        
+        alertController.addAction(yesAction)
+        alertController.addAction(noAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -55,7 +80,7 @@ final class ProfileViewController: UIViewController {
     private let logoutButton: UIButton = {
         let button = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward")!,
-            target: ProfileViewController.self,
+            target: self,
             action: #selector(didTapButton)
         )
         button.tintColor = UIColor(named: "YP Red")

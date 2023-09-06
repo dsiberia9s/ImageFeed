@@ -7,6 +7,14 @@
 
 import Foundation
 
+enum DateError: Error {
+    case invalidDateFormat
+}
+
+struct Response: Codable {
+    let photo: PhotoResult
+}
+
 struct UrlResult: Codable {
     let thumb: URL?
     let full: URL?
@@ -19,7 +27,7 @@ struct PhotoResult: Codable {
     let height: Int
     let description: String?
     let urls: UrlResult
-    let likeByUser: Bool
+    let likedByUser: Bool
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -28,7 +36,7 @@ struct PhotoResult: Codable {
         case height
         case description
         case urls
-        case likeByUser = "liked_by_user"
+        case likedByUser = "liked_by_user"
     }
     
     init(from decoder: Decoder) throws {
@@ -39,11 +47,15 @@ struct PhotoResult: Codable {
         height = try container.decode(Int.self, forKey: .height)
         description = try container.decodeIfPresent(String.self, forKey: .description)
         urls = try container.decode(UrlResult.self, forKey: .urls)
-        likeByUser = try container.decode(Bool.self, forKey: .likeByUser)
+        likedByUser = try container.decode(Bool.self, forKey: .likedByUser)
         
         let createdAtString = try container.decode(String.self, forKey: .createdAt)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        createdAt = dateFormatter.date(from: createdAtString)
+        let dateFormatter = ISO8601DateFormatter()
+        
+        if let date = dateFormatter.date(from: createdAtString) {
+            createdAt = date
+        } else {
+            throw DateError.invalidDateFormat
+        }
     }
 }

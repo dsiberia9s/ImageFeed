@@ -13,7 +13,7 @@ final class ImagesListService {
     private let itemsPerPage: Int = 10
     private (set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
-    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     var busy: Bool = false
     
     struct Photo: Codable {
@@ -23,7 +23,7 @@ final class ImagesListService {
         let welcomeDescription: String?
         let thumbImageURL: String?
         let largeImageURL: String?
-        let isLiked: Bool
+        var isLiked: Bool
         
         init(photoResult: PhotoResult) {
             self.id = photoResult.id
@@ -32,7 +32,7 @@ final class ImagesListService {
             self.welcomeDescription = photoResult.description
             self.thumbImageURL = photoResult.urls.thumb?.absoluteString
             self.largeImageURL = photoResult.urls.full?.absoluteString
-            self.isLiked = photoResult.likeByUser
+            self.isLiked = photoResult.likedByUser
         }
     }
     
@@ -50,7 +50,7 @@ final class ImagesListService {
         var components = URLComponents(url: defaultBaseURL, resolvingAgainstBaseURL: true)
         components?.path = "/photos"
         components?.queryItems = [
-            URLQueryItem(name: "page", value: String(self.lastLoadedPage ?? 1)),
+            URLQueryItem(name: "page", value: String(nextPage)),
             URLQueryItem(name: "per_page", value: String(self.itemsPerPage))
         ]
         guard let url = components?.url else {
@@ -72,6 +72,12 @@ final class ImagesListService {
             }
             
             if let data = data {
+                /*
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("JSON String: \(jsonString)")
+                }
+                */
+                
                 do {
                     self.lastLoadedPage = nextPage
                     
@@ -81,12 +87,10 @@ final class ImagesListService {
                     self.photos += photos
                     
                     DispatchQueue.main.async {
-                        print(self.photos.count)
-                        
                         NotificationCenter.default.post(
-                            name: ImagesListService.DidChangeNotification,
+                            name: self.DidChangeNotification,
                             object: self,
-                            userInfo: ["fetched": true]
+                            userInfo: nil
                         )
                     }
                 } catch {
@@ -97,6 +101,48 @@ final class ImagesListService {
             }
         }
         self.busy = true
+        task.resume()
+    }
+    
+    func changeLike(_ token: String, photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let defaultBaseURL = defaultBaseURL else {
+            return
+        }
+        
+        let url = defaultBaseURL.appendingPathComponent("/photos/\(photoId)/like")
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) {
+            (data, response, error) in
+            
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(Response.self, from: data)
+                    let photo = response.photo
+                    let isLike = photo.likedByUser
+                    
+                    if let index = self.photos.firstIndex(where: { $0.id == photo.id }) {
+                        self.photos[index].isLiked = isLike
+                    }
+                    
+                    completion(.success(()))
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
         task.resume()
     }
 }

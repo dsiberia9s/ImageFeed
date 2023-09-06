@@ -15,7 +15,7 @@ final class ImagesListServiceTests: XCTestCase {
         
         let expectation = self.expectation(description: "Wait for Notification")
         NotificationCenter.default.addObserver(
-            forName: ImagesListService.DidChangeNotification,
+            forName: service.DidChangeNotification,
             object: nil,
             queue: .main) { _ in
                 expectation.fulfill()
