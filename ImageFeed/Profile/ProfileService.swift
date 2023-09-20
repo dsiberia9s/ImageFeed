@@ -28,10 +28,6 @@ final class ProfileService {
     }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
-        guard let defaultBaseURL = defaultBaseURL else {
-            return
-        }
-        
         let url = defaultBaseURL.appendingPathComponent("/me")
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

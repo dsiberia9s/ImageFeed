@@ -7,17 +7,17 @@
 
 import Foundation
 
-final class ImagesListService {
+final public class ImagesListService {
     private init() { }
-    static let shared = ImagesListService()
+    static public let shared = ImagesListService()
     private let itemsPerPage: Int = 10
-    private (set) var photos: [Photo] = []
+    var photos: [Photo] = []
     private var lastLoadedPage: Int?
     let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     var busy: Bool = false
     let dateFormatter = ISO8601DateFormatter()
     
-    struct Photo: Codable {
+    public struct Photo: Codable {
         let id: String
         let size: CGSize
         let createdAt: Date?
@@ -43,10 +43,6 @@ final class ImagesListService {
         }
         
         let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
-        
-        guard let defaultBaseURL = defaultBaseURL else {
-            return
-        }
         
         var components = URLComponents(url: defaultBaseURL, resolvingAgainstBaseURL: true)
         components?.path = "/photos"
@@ -106,10 +102,6 @@ final class ImagesListService {
     }
     
     func changeLike(_ token: String, photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let defaultBaseURL = defaultBaseURL else {
-            return
-        }
-        
         let url = defaultBaseURL.appendingPathComponent("/photos/\(photoId)/like")
         
         var request = URLRequest(url: url)

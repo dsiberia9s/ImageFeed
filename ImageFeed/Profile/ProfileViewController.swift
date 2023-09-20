@@ -8,64 +8,31 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
-    private let oauth2TokenStorage = OAuth2TokenStorage()
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
-    private let oauth2TokenService = OAuth2Service.shared
+protocol ProfileControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+}
+
+final class ProfileViewController: UIViewController, ProfileControllerProtocol, ProfileViewControllerDelegate {
+    var presenter: ProfilePresenterProtocol?
     
-    @objc
-    private func didTapButton() {
-        cleanConfirmation()
+    func configure(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.delegate = self
     }
-    
-    private func cleanConfirmation() {
-        let alertController = UIAlertController(
-            title: "Пока, пока!",
-            message: "Уверены, что хотите выйти?",
-            preferredStyle: .alert
-        )
-                
-        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
-            for view in self.view.subviews {
-                if view is UILabel {
-                    view.removeFromSuperview()
-                    self.oauth2TokenService.clean()
-                    
-                    // Переход на другой контроллер
-                    guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-                    let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-                        .instantiateViewController(withIdentifier: "AuthViewController")
-                    window.rootViewController = tabBarController
-                }
-            }
-        }
-        
-        let noAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
-        
-        alertController.addAction(yesAction)
-        alertController.addAction(noAction)
-        
-        present(alertController, animated: true, completion: nil)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        guard let token = oauth2TokenStorage.token else {
-            return
-        }
-        
-        guard let profile = self.profileService.profile else {
-            return
-        }
-        
+        setupUI()
+        presenter?.viewDidLoad()
+    }
+    
+    @objc func didTapLogout() {
+        logoutUser()
+    }
+    
+    private func setupUI() {
         setupViews()
         setupConstraints()
-        setupObservers()
-        updateProfileDetails(profile)
-        updateAvatar()
     }
     
     private let avatarImage: UIImageView = {
@@ -77,19 +44,21 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
     
-    private let logoutButton: UIButton = {
+    let logoutButton: UIButton = {
         let button = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward")!,
             target: self,
-            action: #selector(didTapButton)
+            action: #selector(didTapLogout)
         )
         button.tintColor = UIColor(named: "YP Red")
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityIdentifier = "logout button"
         return button
     }()
     
-    private let usernameLabel: UILabel = {
+    let usernameLabel: UILabel = {
         let label = UILabel()
+        label.text = "Name Lastname"
         label.textColor = UIColor(named: "YP White")
         let fontSize: CGFloat = 23.0
         let font = UIFont(name: "SFPro", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .bold)
@@ -107,16 +76,16 @@ final class ProfileViewController: UIViewController {
             attributes: [
                 .paragraphStyle: paragraphStyle,
                 .kern: letterSpacing
-                        ]
+            ]
         )
 
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let nicknameLabel: UILabel = {
+    let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.text = "@nickname"
+        label.text = "@username"
         label.textColor = UIColor(named: "YP Gray")
         let fontSize: CGFloat = 13.0
         let font = UIFont(name: "SFPro", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .bold)
@@ -141,7 +110,7 @@ final class ProfileViewController: UIViewController {
             return label
     }()
     
-    private let descriptionLabel: UILabel = {
+    let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Description"
         label.textColor = UIColor(named: "YP White")
@@ -168,8 +137,6 @@ final class ProfileViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    // MARK: - Private Methods
         
     private func setupViews() {
         view.addSubview(avatarImage)
@@ -210,25 +177,14 @@ final class ProfileViewController: UIViewController {
             descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
-
-    private func setupObservers() {
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.DidChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateAvatar()
-        }
+    
+    func updateProfileDetails(name: String, loginName: String, bio: String) {
+        self.usernameLabel.text = name
+        self.nicknameLabel.text = loginName
+        self.descriptionLabel.text = bio
     }
     
-    private func updateProfileDetails(_ profile: ProfileService.Profile) {
-        self.usernameLabel.text = profile.name
-        self.nicknameLabel.text = profile.loginName
-        self.descriptionLabel.text = profile.bio
-    }
-    
-    private func updateAvatar() {
+    func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let imageUrl = URL(string: profileImageURL) else { return }
@@ -256,5 +212,45 @@ final class ProfileViewController: UIViewController {
                 print(error)
             }
         }
+    }
+    
+    func logoutUser() {        
+        let alertController = UIAlertController(
+            title: "Bye bye!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert
+        )
+                
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            self.presenter?.logout()
+            
+            for view in self.view.subviews {
+                if view is UILabel {
+                    view.removeFromSuperview()
+
+                    guard let window = UIApplication.shared.windows.first else
+                    {
+                      fatalError("Invalid Configuration")
+                    }
+
+                    let tabBarController = UIStoryboard(
+                        name: "Main",
+                        bundle: .main
+                    ).instantiateViewController(
+                            withIdentifier: "AuthViewController"
+                    )
+                    
+                    window.rootViewController = tabBarController
+                }
+            }
+            
+        }
+        
+        let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        
+        alertController.addAction(yesAction)
+        alertController.addAction(noAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
 }

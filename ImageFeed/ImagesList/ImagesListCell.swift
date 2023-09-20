@@ -23,7 +23,8 @@ final class ImagesListCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
+        likeButton.accessibilityIdentifier = "like button"
         likeButton.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
     }
     
@@ -40,5 +41,7 @@ final class ImagesListCell: UITableViewCell {
     func setIsLiked(_  isLiked: Bool) {
         let likeImage = isLiked ? UIImage(named: "likeButtonTrue") : UIImage(named: "likeButtonFalse")
         likeButton.setImage(likeImage, for: .normal)
+        // likeButton.accessibilityIdentifier = isLiked ? "like button on" : "like button off"
+        
     }
 }

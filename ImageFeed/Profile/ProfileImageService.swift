@@ -28,11 +28,7 @@ final class ProfileImageService {
         }
     }
     
-    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
-        guard let defaultBaseURL = defaultBaseURL else {
-            return
-        }
-        
+    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {        
         let url = defaultBaseURL.appendingPathComponent("/users/\(username)")
         var request = URLRequest(url: url)
         
