@@ -63,14 +63,26 @@ final class WebViewViewController: UIViewController & WebViewControllerProtocol 
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
+        webView.removeObserver(
+            self,
+            forKeyPath:
+                #keyPath(WKWebView.estimatedProgress),
+            context: nil
+        )
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            presenter?.didUpdateProgressValue(webView.estimatedProgress)
+            presenter?.didUpdateProgressValue(
+                webView.estimatedProgress
+            )
         } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            super.observeValue(
+                forKeyPath: keyPath,
+                of: object,
+                change: change,
+                context: context
+            )
         }
     }
     

@@ -230,7 +230,8 @@ final class ProfileViewController: UIViewController, ProfileControllerProtocol, 
 
                     guard let window = UIApplication.shared.windows.first else
                     {
-                      fatalError("Invalid Configuration")
+                        assertionFailure("Invalid Configuration")
+                        return
                     }
 
                     let tabBarController = UIStoryboard(

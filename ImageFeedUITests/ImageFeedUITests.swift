@@ -27,14 +27,16 @@ class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         
         loginTextField.tap()
-        loginTextField.typeText("YOUR LOGIN")
+        loginTextField.typeText("")
         webView.swipeUp()
+        
+        app.buttons["Done"].tap()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         
         passwordTextField.tap()
-        passwordTextField.typeText("YOUR PSWD")
+        passwordTextField.typeText("")
         webView.swipeUp()
         
         webView.buttons["Login"].tap() // Changed from webViewsQuery to webView
@@ -83,5 +85,15 @@ class ImageFeedUITests: XCTestCase {
         app.buttons["logout button"].tap()
         
         app.alerts["Bye bye!"].scrollViews.otherElements.buttons["Yes"].tap()
+    }
+}
+
+extension XCUIElement {
+    func typeTextAlt(_ text: String) {
+        if !(self.value(forKey: "hasKeyboardFocus") as? Bool ?? false) {
+            XCUIDevice.shared.press(XCUIDevice.Button.home)
+            XCUIApplication().activate()
+        }
+        self.typeText(text)
     }
 }

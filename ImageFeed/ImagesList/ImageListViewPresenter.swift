@@ -35,7 +35,7 @@ final class ImageListPresenter: ImageListPresenterProtocol {
     func viewDidLoad() {
         self.token = oauth2TokenStorage.token
         
-        if self.token != nil {
+        if let token = self.token {
             self.imagesListService.fetchPhotosNextPage(self.token!) { _ in }
         }
         
@@ -52,7 +52,6 @@ final class ImageListPresenter: ImageListPresenterProtocol {
     
     @objc
     func handleNotification(_ notification: Notification) {
-        print("🔔")
         self.delegate?.updateTableViewAnimated()
     }
     
