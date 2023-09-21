@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import WebKit
 
 final class OAuth2Service {
     private init() { }
@@ -49,7 +50,7 @@ final class OAuth2Service {
         let session = URLSession.shared
         let taskx = session.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self = self else { return }
-
+            
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
@@ -60,12 +61,25 @@ final class OAuth2Service {
                     self.lastCode = nil
                     completion(.failure(error))
                 }
-
+                
                 self.task = nil
             }
         }
-
+        
         self.task = taskx
         taskx.resume()
+    }
+        
+    public func clean() {
+        self.authToken = nil
+        // Очищаем все куки из хранилища.
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        // Запрашиваем все данные из локального хранилища.
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            // Массив полученных записей удаляем из хранилища.
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
     }
 }

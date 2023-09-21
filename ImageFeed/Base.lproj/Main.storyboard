@@ -39,6 +39,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ntd-NY-dVb">
                                 <rect key="frame" x="16" y="724" width="382" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="M3M-Dx-FTQ"/>
                                 </constraints>
@@ -66,7 +67,7 @@
                             <constraint firstItem="kG4-Ls-trp" firstAttribute="bottom" secondItem="Ntd-NY-dVb" secondAttribute="bottom" constant="90" id="z59-c5-BGE"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="xBw-ee-ILC"/>
+                    <navigationItem key="navigationItem" customizationIdentifier="" id="xBw-ee-ILC"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2pe-1L-K3W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -75,7 +76,7 @@
         <!--Web View View Controller-->
         <scene sceneID="9HP-Y4-vo6">
             <objects>
-                <viewController id="Hvh-jW-Qyj" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="Hvh-jW-Qyj" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="92x-yc-cmg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -159,7 +160,7 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="likeButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emL-z7-bU3" userLabel="likeButton">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emL-z7-bU3">
                                                     <rect key="frame" x="354" y="4" width="44" height="44"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="likeButtonTrue"/>
@@ -218,7 +219,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="1zI-fe-QJO"/>
-                    <navigationItem key="navigationItem" id="3sg-mV-k10"/>
+                    <navigationItem key="navigationItem" customizationIdentifier="nav back button white" id="3sg-mV-k10"/>
                     <connections>
                         <outlet property="tableView" destination="58y-iL-ZlD" id="VRI-l3-3xY"/>
                         <segue destination="UvB-65-7rn" kind="presentation" identifier="ShowSingleImage" id="q30-TX-Rjk"/>
@@ -262,6 +263,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X3o-6g-sTk" userLabel="backButton">
                                 <rect key="frame" x="8" y="55" width="24" height="24"/>
+                                <accessibility key="accessibilityConfiguration" identifier="nav back button white"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="backwardButton"/>
                                 <connections>
@@ -303,7 +305,6 @@
         <!--Navigation Controller-->
         <scene sceneID="4C9-J9-92G">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RcR-Ab-yj1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="M48-7y-04h" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fky-eB-M2M">
@@ -315,6 +316,7 @@
                         <segue destination="f6k-rC-ARA" kind="relationship" relationship="rootViewController" id="3Sf-fT-zgy"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RcR-Ab-yj1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2342" y="-1095"/>
         </scene>
